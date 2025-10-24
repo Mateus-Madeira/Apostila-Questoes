@@ -58,7 +58,7 @@ if (!is.null(params$questoes) && nrow(params$questoes) > 0) {
       )
 
       cat(paste(alternativas, collapse = "\n\n"))
-      cat("\n\n---\n\n")
+      cat("\n\n \n\n")
 
       # --- MUDANÇA AQUI: Adiciona "ANULADA" ao gabarito se necessário ---
       resposta_gabarito <- ifelse(q$gabarito == "anulada", "ANULADA", toupper(q$gabarito))
@@ -74,3 +74,4 @@ if (!is.null(params$questoes) && nrow(params$questoes) > 0) {
 } else {
   cat("Nenhuma questão disponível para os filtros selecionados.")
 }
+```

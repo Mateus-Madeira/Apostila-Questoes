@@ -1,0 +1,85 @@
+---
+title: "Prova Personalizada - Colégio Militar"
+output:
+  word_document:
+    toc: true
+    toc_depth: 2
+params:
+  questoes: NULL
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(dplyr)
+library(knitr)
+```
+
+```{r gerar_questoes, results='asis'}
+if (!is.null(params$questoes) && nrow(params$questoes) > 0) {
+
+  # --- MUDANÇA AQUI: Ordem das matérias ---
+  ordem_prioritaria <- c("Matemática", "Português")
+  materias_recebidas <- unique(params$questoes$materia)
+  outras <- setdiff(materias_recebidas, ordem_prioritaria)
+  ordem_final <- c(intersect(ordem_prioritaria, materias_recebidas), sort(outras))
+
+  gabarito_final <- c()
+  contador <- 1
+
+  for (materia_atual in ordem_final) {
+    cat("\n# ", materia_atual, "\n\n")
+
+    questoes_mat <- params$questoes %>%
+      filter(materia == materia_atual) %>%
+      arrange(colegio, ano, topico) # Ordena pelas novas colunas
+
+    topico_atual <- ""
+    colegio_atual <- ""
+    ano_atual <- ""
+
+    for (i in 1:nrow(questoes_mat)) {
+      q <- questoes_mat[i, ]
+
+      # Agrupamento visual por Tópico (opcional, mas mantém a estrutura)
+      if (q$topico != topico_atual) {
+        topico_atual <- q$topico
+        cat("\n## ", topico_atual, "\n\n")
+      }
+
+      # --- MUDANÇA AQUI: Novo formato de cabeçalho (SIGLA/ANO) ---
+      cabecalho <- paste0("**", contador, ") (", q$colegio, "/", q$ano, ")** ")
+      
+      # Adiciona o texto (ANULADA) se necessário
+      if (q$gabarito == "anulada") {
+        cabecalho <- paste0(cabecalho, "**(ANULADA)** ")
+      }
+      
+      cat(cabecalho, q$questao, "\n\n")
+
+      # --- MUDANÇA AQUI: Adiciona alternativa 'e' ---
+      alternativas <- c(
+        paste0("a) ", q$alt_a),
+        paste0("b) ", q$alt_b),
+        paste0("c) ", q$alt_c),
+        paste0("d) ", q$alt_d),
+        paste0("e) ", q$alt_e) # NOVO
+      )
+
+      cat(paste(alternativas, collapse = "\n\n"))
+      cat("\n\n \n\n")
+
+      # Lógica do gabarito já funciona para 'e'
+      resposta_gabarito <- ifelse(q$gabarito == "anulada", "ANULADA", toupper(q$gabarito))
+      gabarito_final <- c(gabarito_final, paste0(contador, ". ", resposta_gabarito))
+      
+      contador <- contador + 1
+    }
+  }
+
+  cat("\n\n# Gabarito\n\n")
+  cat(paste(gabarito_final, collapse = "\n\n"))
+  
+} else {
+  cat("Nenhuma questão disponível para os filtros selecionados.")
+}
+```
