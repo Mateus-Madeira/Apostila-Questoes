@@ -31,7 +31,7 @@ if (!is.null(params$questoes) && nrow(params$questoes) > 0) {
 
     questoes_mat <- params$questoes %>%
       filter(materia == materia_atual) %>%
-      arrange(colegio, ano, topico) # Ordena pelas novas colunas
+      arrange(topico, ano, colegio) # Ordena pelas novas colunas
 
     topico_atual <- ""
     colegio_atual <- ""
