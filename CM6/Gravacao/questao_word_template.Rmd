@@ -1,0 +1,71 @@
+---
+title: "Colégio Militar"
+output:
+  word_document:
+    toc: true
+    toc_depth: 2
+params:
+  questao_df: NULL
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(dplyr)
+library(knitr)
+
+# FUNÇÃO AUXILIAR CRÍTICA: Limpa e Escapa Caracteres Markdown
+limpar_texto_questao <- function(texto) {
+  if (is.null(texto) || is.na(texto)) return("")
+  
+  texto <- gsub("[\r\n]+", " ", texto)   # Remove quebras de linha
+  texto <- gsub("\\s+", " ", texto)      # Colapsa múltiplos espaços
+  texto <- trimws(texto)                 # Remove espaços extras
+
+  # Escapa apenas barras verticais e colchetes de tabela que o Pandoc não interpreta bem
+  texto <- gsub("\\|", "\\\\|", texto)
+  texto <- gsub(">", "\\\\>", texto)
+  
+  return(texto)
+}
+```
+
+```{r gerar_questao_word, results='asis'}
+
+if (!is.null(params$questao_df) && nrow(params$questao_df) > 0) {
+
+  # Seleciona a primeira (ou única) questão
+  q <- params$questao_df[1, ]
+
+  # --- Cabeçalho da Questão ---
+  # Ajuste do cabeçalho
+  cabecalho <- paste0("**Questão (", q$colegio, "/", q$ano, ")** ")
+
+  # --- Texto da Questão (LIMPO) ---
+  texto_limpo_questao <- limpar_texto_questao(q$questao)
+  corpo_questao <- paste0(cabecalho, texto_limpo_questao, "\n\n")
+
+  # --- Alternativas (LIMPAS) ---
+  alternativas <- c(
+    # Aplicando a limpeza nas alternativas
+    paste0("a) ", limpar_texto_questao(q$alt_a)),
+    paste0("b) ", limpar_texto_questao(q$alt_b)),
+    paste0("c) ", limpar_texto_questao(q$alt_c)),
+    paste0("d) ", limpar_texto_questao(q$alt_d)),
+    paste0("e) ", limpar_texto_questao(q$alt_e))
+  )
+
+  # Formata como lista Markdown (usando *)
+  bloco_alternativas <- paste0("* ", alternativas, collapse = "\n")
+
+  # --- Montagem Final ---
+  bloco_markdown <- paste0(
+    corpo_questao,
+    bloco_alternativas
+  )
+
+  # Envia o Markdown limpo para o Pandoc
+  cat(bloco_markdown)
+
+} else {
+  cat("Nenhuma questão selecionada para geração de Word.")
+}
