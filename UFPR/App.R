@@ -12,6 +12,8 @@ lista_colegios <- c("UFPR" = "Universidade Federal do Paraná")
 
 lista_topicos <- list(
   "Literatura Brasileira" = c(
+    "Liras de Marília de Dirceu (Tomás Antônio Gonzaga)",
+    "O livro das semelhanças (Ana Martins Marques)",
     "A falência (Julia Lopes de Almeida)", 
     "Eu (Augusto dos Anjos)", 
     "Noite na Taverna (Álvares de Azevedo)", 
