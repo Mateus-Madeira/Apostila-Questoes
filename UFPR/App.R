@@ -32,6 +32,19 @@ lista_topicos <- list(
     "Variação Linguística e Norma Culta",
     "Semântica e Figuras de Linguagem"
   ),
+  "Língua Inglesa" = c(
+    "UFPR 2026",
+    "UFPR 2025",
+    "UFPR 2024",
+    "UFPR 2023",
+    "UFPR 2022",
+    "UFPR 2021",
+    "UFPR 2020",
+    "UFPR 2019",
+    "UFPR 2018",
+    "UFPR 2017",
+    "UFPR 2016"
+  ),
   
   "Biologia" = c(
     "Citologia e Bioquímica Celular",
