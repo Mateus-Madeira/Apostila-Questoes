@@ -1,0 +1,102 @@
+obs = obslua
+
+-- Variáveis globais
+cur_questao = 1
+cur_materia = "Matemática" -- Valor padrão
+cur_escola = "CMBel"
+cur_ano = "2024"
+
+-- Tabela de Escolas
+escolas = {
+    {id = "CMBel", name = "Colégio Militar de Belém"},
+    {id = "CMBH",  name = "Colégio Militar de Belo Horizonte"},
+    {id = "CMB",   name = "Colégio Militar de Brasília"},
+    {id = "CMCG",  name = "Colégio Militar de Campo Grande"},
+    {id = "CMC",   name = "Colégio Militar de Curitiba"},
+    {id = "CMF",   name = "Colégio Militar de Fortaleza"},
+    {id = "CMJF",  name = "Colégio Militar de Juiz de Fora"},
+    {id = "CMM",   name = "Colégio Militar de Manaus"},
+    {id = "CMPA",  name = "Colégio Militar de Porto Alegre"},
+    {id = "CMR",   name = "Colégio Militar do Recife"},
+    {id = "CMRJ",  name = "Colégio Militar do Rio de Janeiro"},
+    {id = "CMS",   name = "Colégio Militar de Salvador"},
+    {id = "CMSM",  name = "Colégio Militar de Santa Maria"},
+    {id = "CMSP",  name = "Colégio Militar de São Paulo"},
+    {id = "CMVM",  name = "Colégio Militar da Vila Militar"}
+}
+
+-- Função para atualizar o nome do arquivo nas configurações do OBS
+function atualizar_nome_arquivo()
+    -- Pega a configuração do perfil atual
+    local profile_config = obs.obs_frontend_get_profile_config()
+    
+    if profile_config then
+        -- Monta o nome: "1 - Matemática - CMC - 2024"
+        local novo_nome = string.format("%d - %s - %s - %s", cur_questao, cur_materia, cur_escola, cur_ano)
+        
+        -- Salva na configuração de saída
+        obs.config_set_string(profile_config, "Output", "FilenameFormatting", novo_nome)
+        obs.config_save(profile_config)
+    end
+end
+
+-- Função chamada quando algum evento acontece no OBS
+function on_event(event)
+    -- Quando a gravação para, incrementa a questão
+    if event == obs.OBS_FRONTEND_EVENT_RECORDING_STOPPED then
+        cur_questao = cur_questao + 1
+        -- Atualiza as configurações salvas do script para refletir o novo número na interface visual
+        -- Nota: Isso requer recarregar as propriedades, mas o OBS faz isso automaticamente ao mudar settings
+        local settings = obs.obs_data_create()
+        obs.obs_data_set_int(settings, "num_questao", cur_questao)
+        -- Aqui seria ideal salvar, mas como o script_update lê da UI, apenas chamar a função de atualizar nome basta:
+        atualizar_nome_arquivo()
+    end
+end
+
+-- Interface Visual do Script
+function script_properties()
+    local props = obs.obs_properties_create()
+
+    -- 1. Campo Número da Questão
+    obs.obs_properties_add_int(props, "num_questao", "Nº da Questão", 1, 1500, 1)
+    
+    -- 2. Lista Dropdown da Matéria (NOVO)
+    local p_materia = obs.obs_properties_add_list(props, "lista_materia", "Matéria", obs.OBS_COMBO_TYPE_LIST, obs.OBS_COMBO_FORMAT_STRING)
+    obs.obs_property_list_add_string(p_materia, "Matemática", "Matemática")
+    obs.obs_property_list_add_string(p_materia, "Português", "Português")
+
+    -- 3. Lista Dropdown das Escolas
+    local p_escola = obs.obs_properties_add_list(props, "lista_escolas", "Colégio Militar", obs.OBS_COMBO_TYPE_LIST, obs.OBS_COMBO_FORMAT_STRING)
+    
+    for _, escola in ipairs(escolas) do
+        obs.obs_property_list_add_string(p_escola, escola.name, escola.id)
+    end
+
+    -- 4. Lista Dropdown do Ano
+    local p_ano = obs.obs_properties_add_list(props, "lista_ano", "Ano", obs.OBS_COMBO_TYPE_LIST, obs.OBS_COMBO_FORMAT_STRING)
+    obs.obs_property_list_add_string(p_ano, "2024", "2024")
+    obs.obs_property_list_add_string(p_ano, "2025", "2025")
+    obs.obs_property_list_add_string(p_ano, "2026", "2026") -- Adicionei 2026 por precaução
+
+    obs.obs_properties_add_button(props, "btn_aplicar", "FORÇAR ATUALIZAÇÃO DO NOME", function() atualizar_nome_arquivo() end)
+
+    return props
+end
+
+function script_description()
+    return "Renomeia arquivos para: [Nº Questão] - [Matéria] - [Escola] - [Ano].\nIncrementa questão automaticamente ao parar a gravação."
+end
+
+function script_update(settings)
+    cur_questao = obs.obs_data_get_int(settings, "num_questao")
+    cur_materia = obs.obs_data_get_string(settings, "lista_materia") -- Lê a matéria selecionada
+    cur_escola = obs.obs_data_get_string(settings, "lista_escolas")
+    cur_ano = obs.obs_data_get_string(settings, "lista_ano")
+    
+    atualizar_nome_arquivo()
+end
+
+function script_load(settings)
+    obs.obs_frontend_add_event_callback(on_event)
+end
