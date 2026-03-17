@@ -66,6 +66,7 @@ lista_topicos <- list(
   
   # Mantido conforme original solicitado
   "Física" = c(
+    "Unidades de medidas e Grandezas Físicas",
     "Cinemática",
     "Mecânica", 
     "Hidrostática e Hidrodinâmica", 
