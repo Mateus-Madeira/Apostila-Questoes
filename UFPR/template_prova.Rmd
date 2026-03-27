@@ -45,8 +45,11 @@ if (!is.null(params$questoes) && nrow(params$questoes) > 0) {
 
       # Numeração da questão + o texto que já contém o cabeçalho (UFPR/Ano)
       # O campo q$questao já vem formatado do Shiny como: **2026 UFPR (2025/2026)** texto...
-      cat(paste0("**", contador, ")** "), q$questao, "\n\n")
+      # Gera o cabeçalho automático: **UFPR (2025/2026)** # Note que usamos q$ano que vem do banco
+cabecalho_dinamico <- paste0("**UFPR (", (q$ano - 1), "/", q$ano, ")**")
 
+# Imprime: 1) **UFPR (2025/2026)** Texto da questão...
+cat(paste0("**", contador, ")** "), cabecalho_dinamico, q$questao, "\n\n")
       # Lista de alternativas
       alternativas <- c(
         paste0("a) ", q$alt_a),

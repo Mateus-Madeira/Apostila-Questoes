@@ -21,7 +21,8 @@ lista_topicos <- list(
     "O drible (Sérgio Rodrigues)", 
     "O Quinze (Rachel de Queiroz)", 
     "O sol na cabeça (Geovani Martins)", 
-    "Poema sujo (Ferreira Gullar)"
+    "Poema sujo (Ferreira Gullar)",
+    "Quarto de despejo (Carolina Maria de Jesus)"
   ),
   
   "Língua Portuguesa" = c(
@@ -206,15 +207,17 @@ server <- function(input, output, session) {
     anexar_imagem_logica(input$upload_imagem, input$anexar_target, input[[input$anexar_target]])
   })
   
+  # --- SALVAR NOVA QUESTÃO ---
   observeEvent(input$salvar, {
     req(input$materia, input$questao_texto)
-    ano_sel <- as.numeric(input$ano)
-    cabecalho <- paste0("**", "UFPR", " (", (ano_sel - 1), "/", ano_sel, ") **")
     
     nova <- tibble(
-      id = ids::uuid(), materia = input$materia, topico = input$topico,
-      colegio = input$colegio, ano = ano_sel,
-      questao = paste0(cabecalho, input$questao_texto),
+      id = ids::uuid(), 
+      materia = input$materia, 
+      topico = input$topico,
+      colegio = input$colegio, 
+      ano = as.numeric(input$ano),
+      questao = input$questao_texto, # AGORA SALVA APENAS O TEXTO
       alt_a = input$alt_a, alt_b = input$alt_b, alt_c = input$alt_c,
       alt_d = input$alt_d, alt_e = input$alt_e, gabarito = input$gabarito
     )
@@ -242,13 +245,15 @@ server <- function(input, output, session) {
               options = list(language = list(url = '//cdn.datatables.net/plug-ins/1.10.19/i18n/Portuguese-Brasil.json')))
   })
   
+  # --- MODAL DE EDIÇÃO ---
   observeEvent(input$edit_question, {
     q <- banco_questoes() %>% filter(id == input$edit_question)
     showModal(modalDialog(
       title = "Edição Integral", size = "l",
       fluidRow(
-        column(6, selectInput("edit_materia", "Matéria", choices = names(lista_topicos), selected = q$materia)),
-        column(6, selectInput("edit_topico", "Tópico", choices = lista_topicos[[q$materia]], selected = q$topico))
+        column(4, selectInput("edit_materia", "Matéria", choices = names(lista_topicos), selected = q$materia)),
+        column(4, selectInput("edit_topico", "Tópico", choices = lista_topicos[[q$materia]], selected = q$topico)),
+        column(4, selectInput("edit_ano", "Ano da Prova", choices = anos_disponiveis, selected = q$ano)) # CAMPO DE ANO ADICIONADO
       ),
       textAreaInput("edit_texto", "Texto da Questão", q$questao, height = "150px", width = "100%"),
       fluidRow(
@@ -273,16 +278,20 @@ server <- function(input, output, session) {
     anexar_imagem_logica(input$edit_upload, input$edit_target, input[[input$edit_target]])
   })
   
+  # --- SALVAR EDIÇÃO ---
   observeEvent(input$salvar_edicao, {
     df <- banco_questoes()
     idx <- which(df$id == input$edit_question)
+    
     df$materia[idx] <- input$edit_materia
     df$topico[idx] <- input$edit_topico
+    df$ano[idx]    <- as.numeric(input$edit_ano) # ANO ATUALIZADO AQUI
     df$questao[idx] <- input$edit_texto
     df$alt_a[idx] <- input$edit_alt_a; df$alt_b[idx] <- input$edit_alt_b
     df$alt_c[idx] <- input$edit_alt_c; df$alt_d[idx] <- input$edit_alt_d
     df$alt_e[idx] <- input$edit_alt_e
     df$gabarito[idx] <- input$edit_gabarito
+    
     banco_questoes(df); saveRDS(df, DB_PATH); removeModal(); showNotification("Atualizado!")
   })
   
@@ -297,8 +306,6 @@ server <- function(input, output, session) {
     novo <- banco_questoes() %>% filter(id != input$delete_question)
     banco_questoes(novo); saveRDS(novo, DB_PATH); removeModal(); showNotification("Excluído!", type = "warning")
   })
-  
-  # --- LOGICA DE EXPORTAÇÃO (DENTRO DO SERVER) ---
   
   output$seletor_materia_ui <- renderUI({
     materias <- unique(banco_questoes()$materia)
