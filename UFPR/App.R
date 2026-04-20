@@ -22,7 +22,8 @@ lista_topicos <- list(
     "O Quinze (Rachel de Queiroz)", 
     "O sol na cabeça (Geovani Martins)", 
     "Poema sujo (Ferreira Gullar)",
-    "Quarto de despejo (Carolina Maria de Jesus)"
+    "Quarto de despejo (Carolina Maria de Jesus)",
+    "Nove noites (Bernardo Carvalho)"
   ),
   
   "Língua Portuguesa" = c(
