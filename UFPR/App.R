@@ -23,7 +23,11 @@ lista_topicos <- list(
     "O sol na cabeça (Geovani Martins)", 
     "Poema sujo (Ferreira Gullar)",
     "Quarto de despejo (Carolina Maria de Jesus)",
-    "Nove noites (Bernardo Carvalho)"
+    "Nove noites (Bernardo Carvalho)",
+    "Últimos Cantos (Gonçalves Dias)",
+    "Casa de Pensão (Aluísio Azevedo)",
+    "Morte e vida severina (João Cabral de Melo Neto)",
+    "Sagarana (Guimarães Rosa)"
   ),
   
   "Língua Portuguesa" = c(
