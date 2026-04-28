@@ -27,7 +27,9 @@ lista_topicos <- list(
     "Últimos Cantos (Gonçalves Dias)",
     "Casa de Pensão (Aluísio Azevedo)",
     "Morte e vida severina (João Cabral de Melo Neto)",
-    "Sagarana (Guimarães Rosa)"
+    "Sagarana (Guimarães Rosa)",
+    "O Uraguai (Basílio da Gama)",
+    "Clara dos Anjos (Lima Barreto)"
   ),
   
   "Língua Portuguesa" = c(
