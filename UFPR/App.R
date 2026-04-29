@@ -29,7 +29,8 @@ lista_topicos <- list(
     "Morte e vida severina (João Cabral de Melo Neto)",
     "Sagarana (Guimarães Rosa)",
     "O Uraguai (Basílio da Gama)",
-    "Clara dos Anjos (Lima Barreto)"
+    "Clara dos Anjos (Lima Barreto)",
+    "Relato de um Certo Oriente (Milton Hatoum)"
   ),
   
   "Língua Portuguesa" = c(
