@@ -30,7 +30,8 @@ lista_topicos <- list(
     "Sagarana (Guimarães Rosa)",
     "O Uraguai (Basílio da Gama)",
     "Clara dos Anjos (Lima Barreto)",
-    "Relato de um Certo Oriente (Milton Hatoum)"
+    "Relato de um Certo Oriente (Milton Hatoum)",
+    "Várias Histórias (Machado de Assis)"
   ),
   
   "Língua Portuguesa" = c(
