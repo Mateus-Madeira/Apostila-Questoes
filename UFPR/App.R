@@ -31,7 +31,11 @@ lista_topicos <- list(
     "O Uraguai (Basílio da Gama)",
     "Clara dos Anjos (Lima Barreto)",
     "Relato de um Certo Oriente (Milton Hatoum)",
-    "Várias Histórias (Machado de Assis)"
+    "Várias Histórias (Machado de Assis)",
+    "Eles não usam black-tie (Gianfrancesco Guarnieri)",
+    "Claro Enigma (Carlos Drummond de Andrade)",
+    "A Última Quimera (Ana Miranda)",
+    "Sermão de Santo Antônio aos peixes (Padre Antônio Vieira)"
   ),
   
   "Língua Portuguesa" = c(
