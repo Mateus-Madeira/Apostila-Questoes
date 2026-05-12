@@ -35,7 +35,8 @@ lista_topicos <- list(
     "Eles não usam black-tie (Gianfrancesco Guarnieri)",
     "Claro Enigma (Carlos Drummond de Andrade)",
     "A Última Quimera (Ana Miranda)",
-    "Sermão de Santo Antônio aos peixes (Padre Antônio Vieira)"
+    "Sermão de Santo Antônio aos peixes (Padre Antônio Vieira)",
+    "Os Dois ou o Inglês Maquinista (Martins Pena)"
   ),
   
   "Língua Portuguesa" = c(
