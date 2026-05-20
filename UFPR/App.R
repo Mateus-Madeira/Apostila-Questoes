@@ -36,7 +36,11 @@ lista_topicos <- list(
     "Claro Enigma (Carlos Drummond de Andrade)",
     "A Última Quimera (Ana Miranda)",
     "Sermão de Santo Antônio aos peixes (Padre Antônio Vieira)",
-    "Os Dois ou o Inglês Maquinista (Martins Pena)"
+    "Os Dois ou o Inglês Maquinista (Martins Pena)",
+    "Fogo morto (José Lins do Rego)",
+    "Inocência (Visconde de Taunay)",
+    "Lucíola (José de Alencar)",
+    "Poemas Escolhidos de Gregório de Matos (Gregório de Matos)"
   ),
   
   "Língua Portuguesa" = c(
@@ -58,7 +62,9 @@ lista_topicos <- list(
     "UFPR 2019",
     "UFPR 2018",
     "UFPR 2017",
-    "UFPR 2016"
+    "UFPR 2016",
+    "UFPR 2015",
+    "UFPR 2014"
   ),
   
   "Biologia" = c(
