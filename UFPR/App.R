@@ -40,7 +40,9 @@ lista_topicos <- list(
     "Fogo morto (José Lins do Rego)",
     "Inocência (Visconde de Taunay)",
     "Lucíola (José de Alencar)",
-    "Poemas Escolhidos de Gregório de Matos (Gregório de Matos)"
+    "Poemas Escolhidos de Gregório de Matos (Gregório de Matos)",
+    "Bom-Crioulo (Adolfo Caminha)",
+    "Lavoura Arcaica (Raduan Nassar)"
   ),
   
   "Língua Portuguesa" = c(
